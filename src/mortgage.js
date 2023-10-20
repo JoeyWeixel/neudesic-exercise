@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 class mortgage{
   constructor(principle, numPayments, interestRate){
     this.principle = principle;
@@ -79,3 +77,5 @@ class mortgage{
 
   }
 }
+
+export default mortgage;
