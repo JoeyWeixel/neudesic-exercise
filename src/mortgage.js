@@ -5,6 +5,8 @@ class mortgage{
     this.principle = principle;
     this.numPayments = numPayments;
     this.interestRate = interestRate;
+
+    this.createMonthlyLists();
   }
 
   get principle(){
@@ -21,8 +23,39 @@ class mortgage{
     let payment = this.principle * ((this.interestRate * onePlusRtoN) / (onePlusRtoN - 1));
     return payment;
   }
-  
-  #generateMonthlyValues(){
+  get principleValuesList(){
+    return this.principleValuesList;
+  }
+  get principlePaymentsList(){
+    return this.principlePaymentsList;
+  }
+  get interestPaymentsList(){
+    return this.interestPaymentsList;
+  }
+  get totalInterestList(){
+    return this.totalInterestList;
+  }
+  get totalPaidList(){
+    return this.totalPaidList;
+  }
+
+  set principleValuesList(values){
+    this.principleValuesList = values;
+  }
+  set principlePaymentsList(values){
+    this.principlePaymentsList = values;
+  }
+  set interestPaymentsList(values){
+    this.interestPaymentsList = values;
+  }
+  set totalInterestList(values){
+    this.totalInterestList = values;
+  }
+  set totalPaidList(values){
+    this.totalPaidList = values;
+  }
+
+  createMonthlyLists(){
     const principleValues = [this.principle];
     const principlePayments = [0];
     const interestPayments = [0];
@@ -38,5 +71,11 @@ class mortgage{
       totalInterest.push(totalInterest(i-1) + interest);
       totalPaid.push(i * this.monthlyPayment);
     }
+    this.principleValuesList = principleValues;
+    this.principlePaymentsList = principlePayments;
+    this.interestPaymentsList = interestPayments;
+    this.totalInterestList = totalInterest;
+    this.totalPaidList = totalPaid;
+
   }
 }
