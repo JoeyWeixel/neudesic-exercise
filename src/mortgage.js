@@ -1,4 +1,4 @@
-class mortgage{
+class Mortgage{
   constructor(principle, numPayments, interestRate){
     this.principle = principle;
     this.numPayments = numPayments;
@@ -78,4 +78,4 @@ class mortgage{
   }
 }
 
-export default mortgage;
+export default Mortgage;
