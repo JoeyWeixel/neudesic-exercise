@@ -42,8 +42,8 @@ class InputScreen{
     appendFormInputAndLabel('number', 'interestRate', 'Enter loan interest rate (%)', form);
 
     const submitMortgageButton = document.createElement('button');
-    submitMortgageButton.classList.add('button', 'add', 'material-symbols-outlined');
-    submitMortgageButton.innerText = 'add';
+    submitMortgageButton.classList.add('button', 'done', 'material-symbols-outlined');
+    submitMortgageButton.innerText = 'check';
     submitMortgageButton.addEventListener('click', e => {
       const principle = document.getElementById('loanAmount').value;
       const months = document.getElementById('loanLength').value;
@@ -92,7 +92,6 @@ class TableScreen{
 
     const table = tableMaker(headers, columnData);
     this.element.appendChild(table);
-    
   }
 
   get element(){
@@ -166,4 +165,4 @@ function tableMaker(headers = [], dataColumns = []){
   return table;
 }
 
-export default Page;
+export default {Page, TableScreen};

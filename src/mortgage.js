@@ -83,7 +83,7 @@ class Mortgage{
       totalInterest.push(totalInterest[i-1] + interest);
       totalPaid.push(i * this.monthlyPayment);
     }
-    console.log(principleValues);
+    
     this.principleValuesList = principleValues;
     this.principlePaymentsList = principlePayments;
     this.interestPaymentsList = interestPayments;
