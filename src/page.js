@@ -154,10 +154,10 @@ function tableMaker(headers = [], dataColumns = []){
     headerRow.appendChild(generateHTMLElement('th', [], headers[i]));
   }
   table.appendChild(headerRow);
-  for(let i=0; i<=dataColumns[0].length; i++){
+  for(let i=0; i<dataColumns[0].length; i++){
     const row = document.createElement('tr');
     for(let j=0; j<dataColumns.length; j++){
-      const data = generateHTMLElement('td', [], dataColumns[j][i]);
+      const data = generateHTMLElement('td', [], Math.round(dataColumns[j][i] * 100) / 100); // "naive" rounding apparently, works fine enough here bc this doesnt affect calculations on display.
       row.appendChild(data);
     }
     table.appendChild(row);
