@@ -4,7 +4,7 @@ class Page{
   constructor(){
     this.$screen = new InputScreen(this);
     this.$pageNode = document.body;
-    this.pageNode.appendChild(this.screen.html);
+    this.pageNode.appendChild(this.screen.element);
   }
 
   get screen(){
@@ -24,7 +24,7 @@ class Page{
 
   updatePage(){
     this.pageNode.innerHTML = '';
-    this.pageNode.appendChild(this.screen.html);
+    this.pageNode.appendChild(this.screen.element);
   }
 
 
@@ -33,9 +33,9 @@ class Page{
 class InputScreen{
   constructor(page){
     this.$page = page;
-    this.$html = generateHTMLElement('div', ['screen']);
+    this.$element = generateHTMLElement('div', ['screen']);
     const form = generateHTMLElement('div', ['form']);
-    this.html.appendChild(form);
+    this.element.appendChild(form);
 
     appendFormInputAndLabel('number', 'loanAmount', 'Enter loan amount ($)', form);
     appendFormInputAndLabel('number', 'loanLength', 'Enter loan length (Months)', form);
@@ -57,15 +57,15 @@ class InputScreen{
 
   }
 
-  get html(){
-    return this.$html;
+  get element(){
+    return this.$element;
   }
   get page(){
     return this.$page;
   }
 
-  set html(html){
-    this.$html = html;
+  set element(element){
+    this.$element = element;
   }
   set page(page){
     this.$page = page;
@@ -75,11 +75,32 @@ class InputScreen{
 class TableScreen{
   constructor(thisMortgage){
     this.mortgage = thisMortgage;
-    this.html = 'tablescreen';
+    this.$element = generateHTMLElement('div', ['screen', 'table']);
+
+    const headers = ['Months', 'Principle Remaining', 'Total Paid', 'Principle Paid',
+     'Interest Paid', 'Total Interest Accrued'];
+
+     const monthsArray = Array.from(
+      {length: (Number(this.mortgage.numPayments) + 1)},
+      (_, index) => index
+    );
+
+    const columnData = [monthsArray, this.mortgage.principleValuesList, this.mortgage.totalPaidList,
+      this.mortgage.principlePaymentsList, this.mortgage.interestPaymentsList,
+      this.mortgage.totalInterestList];
+    console.log(columnData);
+
+    const table = tableMaker(headers, columnData);
+    this.element.appendChild(table);
+    
   }
 
-  get html(){
-    return this.html;
+  get element(){
+    return this.$element;
+  }
+
+  set element(element){
+    this.$element = element;
   }
 }
 
@@ -124,6 +145,25 @@ function generateFormLabel(label, forInput){
   textLabel.setAttribute('for', forInput);
   textLabel.innerText = label;
   return textLabel;
+}
+
+function tableMaker(headers = [], dataColumns = []){
+  const table = document.createElement('table');
+  const headerRow = document.createElement('tr');
+  for(let i=0; i<headers.length; i++){
+    headerRow.appendChild(generateHTMLElement('th', [], headers[i]));
+  }
+  table.appendChild(headerRow);
+  for(let i=0; i<=dataColumns[0].length; i++){
+    const row = document.createElement('tr');
+    for(let j=0; j<dataColumns.length; j++){
+      const data = generateHTMLElement('td', [], dataColumns[j][i]);
+      row.appendChild(data);
+    }
+    table.appendChild(row);
+  }
+  
+  return table;
 }
 
 export default Page;
