@@ -41,7 +41,7 @@ class InputScreen{
     this.element.appendChild(form);
 
     appendFormInputAndLabel('number', 'loanAmount', 'Enter loan amount ($)', form);
-    appendFormInputAndLabel('number', 'loanLength', 'Enter loan length (m onths)', form);
+    appendFormInputAndLabel('number', 'loanLength', 'Enter loan length (months)', form);
     appendFormInputAndLabel('number', 'interestRate', 'Enter annual loan interest rate (%)', form);
     
     const submitMortgageButton = document.createElement('button');
