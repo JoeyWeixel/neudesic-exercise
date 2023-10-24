@@ -9,8 +9,8 @@
 :root{
   --dark-gray: #33393D;
   --yellow: #FFCD24;
-  --solid-blue: #2AABE4;
-  --light-blue: #9DC8E4;
+  --background-main: rgb(249, 250, 251);
+  --background-secondary: white;
   --light-gray: #666B6E;
 }
 
@@ -19,16 +19,16 @@ body{
   justify-content: space-between;
   flex-direction: column;
   gap: 60px;
-  background-color: var(--solid-blue);
-  color: white;
+  background-color: var(--background-main);
+  color: var(--dark-gray);
 }
 
 /* Document header */
 .header{
   font-size: 2rem;
   padding: 1em;
-  color: white;
-  box-shadow: 0px 1px 3px var(--light-gray);
+  box-shadow: 0px -1px 3px var(--light-gray);
+  background-color: white;
 }
 
 .screen{
@@ -44,9 +44,9 @@ body{
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  background-color: var(--light-blue);
+  background-color: var(--background-secondary);
   padding: 3%;
-  box-shadow: 0px 2px 10px var(--light-gray);
+  box-shadow: 0px 0px 5px -2px var(--light-gray);
   color: var(--dark-gray);
   border-radius: 5px;
 }
@@ -84,7 +84,7 @@ body{
   background-color: white;
   color: var(--dark-gray);
   padding: .5em 1em;
-  box-shadow: 0px 2px 10px var(--light-gray);
+  box-shadow: 0px 0px 5px -2px var(--light-gray);
   border-radius: 1em;
 }
 
@@ -97,7 +97,7 @@ body{
   height: min(350px, 30%);
   background-color: white;
   color: black;
-  box-shadow: 0px 5px 15px var(--light-gray);
+  box-shadow: 0px 0px 12px -5px var(--light-gray);
 }
 
 table, th, td{
@@ -106,7 +106,7 @@ table, th, td{
 }
 
 tr:nth-child(even){
-  background-color: var(--light-blue);
+  background-color: lightblue;
 }
 
 tr:hover{
