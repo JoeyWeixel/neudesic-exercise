@@ -17,8 +17,8 @@ class Mortgage{
     return this.$interestRate;
   }
   get monthlyPayment(){
-    let onePlusRtoN = Math.pow(1 + this.interestRate, this.numPayments);
-    let payment = this.principle * ((this.interestRate * onePlusRtoN) / (onePlusRtoN - 1));
+    let onePlusRtoN = Math.pow(1 + (this.interestRate / 12), this.numPayments);
+    let payment = this.principle * (((this.interestRate / 12) * onePlusRtoN) / (onePlusRtoN - 1));
     return payment;
   }
   get principleValuesList(){
@@ -73,8 +73,9 @@ class Mortgage{
     const interestPayments = [0];
     const totalInterest = [0];
     const totalPaid = [0];
+    const monthlyInterest = this.interestRate/12;
     for(let i=1; i<=this.numPayments; i++){
-      let interest = principleValues[i-1] * this.interestRate;
+      let interest = principleValues[i-1] * monthlyInterest;
       let principlePayment = this.monthlyPayment - interest;
 
       principleValues.push(principleValues[i-1] - principlePayment);

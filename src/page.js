@@ -42,7 +42,7 @@ class InputScreen{
 
     appendFormInputAndLabel('number', 'loanAmount', 'Enter loan amount ($)', form);
     appendFormInputAndLabel('number', 'loanLength', 'Enter loan length (Months)', form);
-    appendFormInputAndLabel('number', 'interestRate', 'Enter loan interest rate (%)', form);
+    appendFormInputAndLabel('number', 'interestRate', 'Enter annual loan interest rate (%)', form);
     
     const submitMortgageButton = document.createElement('button');
     submitMortgageButton.classList.add('button', 'done', 'material-symbols-outlined');
@@ -92,6 +92,9 @@ class TableScreen{
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Original Principle: $' + this.mortgage.principle));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Loan Length: ' + this.mortgage.numPayments + ' Months'));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Interest Rate: ' + this.mortgage.interestRate * 100 + '%'));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Monthly Payment: ' + '$' + Math.round(this.mortgage.monthlyPayment * 100) / 100));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Total Loan Cost: ' + '$' + Math.round(this.mortgage.totalPaidList[this.mortgage.totalPaidList.length - 1] * 100) / 100));
+
 
     this.element.appendChild(mortgageInfoBar);
 
@@ -177,7 +180,7 @@ function tableMaker(headers = [], dataColumns = []){
   for(let i=0; i<dataColumns[0].length; i++){
     const row = document.createElement('tr');
     for(let j=0; j<dataColumns.length; j++){
-      const data = generateHTMLElement('td', [], Math.round(dataColumns[j][i] * 100) / 100); // "naive" rounding apparently, works fine enough here bc this doesnt affect calculations on display.
+      const data = generateHTMLElement('td', [], '$' + Math.round(dataColumns[j][i] * 100) / 100); // "naive" rounding apparently, works fine enough here bc this doesnt affect calculations on display.
       row.appendChild(data);
     }
     table.appendChild(row);
