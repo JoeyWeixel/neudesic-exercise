@@ -5,7 +5,7 @@ class Page{
     this.$screen = new InputScreen(this);
     this.$pageNode = document.body;
 
-    const header = generateHTMLElement('div', ['header'], 'Mortgage Amoritization Schedule');
+    const header = generateHTMLElement('div', ['header'], 'Mortgage Amoritization Schedule Calculator');
     this.pageNode.appendChild(header);
     this.pageNode.appendChild(this.screen.element);
   }
@@ -35,7 +35,7 @@ class Page{
 class InputScreen{
   constructor(page){
     this.$page = page;
-    this.$element = generateHTMLElement('div', ['screen']);
+    this.$element = generateHTMLElement('div', ['screen', 'form']);
     const form = generateHTMLElement('div', ['form']);
     this.element.appendChild(form);
 
