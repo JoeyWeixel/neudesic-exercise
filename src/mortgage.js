@@ -1,14 +1,14 @@
 class Mortgage{
-  constructor(principle, numPayments, interestRate){
-    this.$principle = principle;
+  constructor(principal, numPayments, interestRate){
+    this.$principal = principal;
     this.$numPayments = numPayments;
     this.$interestRate = interestRate;
 
     this.createMonthlyLists();
   }
 
-  get principle(){
-    return this.$principle;
+  get principal(){
+    return this.$principal;
   }
   get numPayments(){
     return this.$numPayments;
@@ -18,14 +18,14 @@ class Mortgage{
   }
   get monthlyPayment(){
     let onePlusRtoN = Math.pow(1 + (this.interestRate / 12), this.numPayments);
-    let payment = this.principle * (((this.interestRate / 12) * onePlusRtoN) / (onePlusRtoN - 1));
+    let payment = this.principal * (((this.interestRate / 12) * onePlusRtoN) / (onePlusRtoN - 1));
     return payment;
   }
-  get principleValuesList(){
-    return this.$principleValuesList;
+  get principalValuesList(){
+    return this.$principalValuesList;
   }
-  get principlePaymentsList(){
-    return this.$principlePaymentsList;
+  get principalPaymentsList(){
+    return this.$principalPaymentsList;
   }
   get interestPaymentsList(){
     return this.$interestPaymentsList;
@@ -37,11 +37,11 @@ class Mortgage{
     return this.$totalPaidList;
   }
 
-  set principleValuesList(values){
-    this.$principleValuesList = values;
+  set principalValuesList(values){
+    this.$principalValuesList = values;
   }
-  set principlePaymentsList(values){
-    this.$principlePaymentsList = values;
+  set principalPaymentsList(values){
+    this.$principalPaymentsList = values;
   }
   set interestPaymentsList(values){
     this.$interestPaymentsList = values;
@@ -52,8 +52,8 @@ class Mortgage{
   set totalPaidList(values){
     this.$totalPaidList = values;
   }
-  set principle(principle){
-    this.$principle = principle;
+  set principal(principal){
+    this.$principal = principal;
   }
   set numPayments(num){
     this.$numPayments = num;
@@ -63,30 +63,30 @@ class Mortgage{
   }
   set monthlyPayment(monthly){
     let onePlusRtoN = Math.pow(1 + this.interestRate, this.numPayments);
-    let payment = this.principle * ((this.interestRate * onePlusRtoN) / (onePlusRtoN - 1));
+    let payment = this.principal * ((this.interestRate * onePlusRtoN) / (onePlusRtoN - 1));
     this.monthlyPayment = payment;
   }
 
   createMonthlyLists(){
-    const principleValues = [this.principle];
-    const principlePayments = [0];
+    const principalValues = [this.principal];
+    const principalPayments = [0];
     const interestPayments = [0];
     const totalInterest = [0];
     const totalPaid = [0];
     const monthlyInterest = this.interestRate/12;
     for(let i=1; i<=this.numPayments; i++){
-      let interest = principleValues[i-1] * monthlyInterest;
-      let principlePayment = this.monthlyPayment - interest;
+      let interest = principalValues[i-1] * monthlyInterest;
+      let principalPayment = this.monthlyPayment - interest;
 
-      principleValues.push(principleValues[i-1] - principlePayment);
-      principlePayments.push(principlePayment);
+      principalValues.push(principalValues[i-1] - principalPayment);
+      principalPayments.push(principalPayment);
       interestPayments.push(interest);
       totalInterest.push(totalInterest[i-1] + interest);
       totalPaid.push(i * this.monthlyPayment);
     }
     
-    this.principleValuesList = principleValues;
-    this.principlePaymentsList = principlePayments;
+    this.principalValuesList = principalValues;
+    this.principalPaymentsList = principalPayments;
     this.interestPaymentsList = interestPayments;
     this.totalInterestList = totalInterest;
     this.totalPaidList = totalPaid;

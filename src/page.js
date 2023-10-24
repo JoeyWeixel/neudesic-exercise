@@ -48,17 +48,17 @@ class InputScreen{
     submitMortgageButton.classList.add('button', 'done', 'material-symbols-outlined');
     submitMortgageButton.innerText = 'check';
     submitMortgageButton.addEventListener('click', e => {
-      const principle = document.getElementById('loanAmount').value;
+      const principal = document.getElementById('loanAmount').value;
       const months = document.getElementById('loanLength').value;
       const rate = document.getElementById('interestRate').value;
-      if(principle < 0){
-        alert('Principle must be greater than 0');
+      if(principal < 0){
+        alert('Principal must be greater than 0');
       }else if(!Number.isInteger(Number.parseInt(months)) || months < 0){
         alert('Input must be a whole number of months greater than 0');
       }else if(interestRate<0){
         alert('Interest rate must be greater than 0');
       }else{
-        const newMortgage = new Mortgage(principle, months, rate/100);
+        const newMortgage = new Mortgage(principal, months, rate/100);
         const table = new TableScreen(this.page, newMortgage);
         this.page.screen = table;
       }
@@ -89,7 +89,7 @@ class TableScreen{
     this.$element = generateHTMLElement('div', ['screen', 'table']);
 
     const mortgageInfoBar = generateHTMLElement('div', ['mortgage-info', 'bar']);
-    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Original Principle: $' + this.mortgage.principle));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Original Principal: $' + this.mortgage.Principal));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Loan Length: ' + this.mortgage.numPayments + ' Months'));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Interest Rate: ' + this.mortgage.interestRate * 100 + '%'));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Monthly Payment: ' + '$' + Math.round(this.mortgage.monthlyPayment * 100) / 100));
@@ -98,7 +98,7 @@ class TableScreen{
 
     this.element.appendChild(mortgageInfoBar);
 
-    const headers = ['Months', 'Principle Remaining', 'Total Paid', 'Principle Paid',
+    const headers = ['Months', 'Principal Remaining ($)', 'Total Paid', 'Principal Paid',
      'Interest Paid', 'Total Interest Accrued'];
 
      const monthsArray = Array.from(
@@ -106,8 +106,8 @@ class TableScreen{
       (_, index) => index
     );
 
-    const columnData = [monthsArray, this.mortgage.principleValuesList, this.mortgage.totalPaidList,
-      this.mortgage.principlePaymentsList, this.mortgage.interestPaymentsList,
+    const columnData = [monthsArray, this.mortgage.principalValuesList, this.mortgage.totalPaidList,
+      this.mortgage.principalPaymentsList, this.mortgage.interestPaymentsList,
       this.mortgage.totalInterestList];
 
     const table = tableMaker(headers, columnData);
