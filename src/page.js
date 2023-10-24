@@ -6,7 +6,7 @@ class Page{
     this.$screen = new InputScreen(this);
     this.$pageNode = document.body;
 
-    const header = generateHTMLElement('div', ['header'], 'Mortgage Amoritization Schedule Calculator');
+    const header = generateHTMLElement('div', ['header'], 'Mortgage Amortization Schedule Calculator');
     this.pageNode.appendChild(header);
     this.pageNode.appendChild(this.screen.element);
   }
@@ -41,24 +41,24 @@ class InputScreen{
     this.element.appendChild(form);
 
     appendFormInputAndLabel('number', 'loanAmount', 'Enter loan amount ($)', form);
-    appendFormInputAndLabel('number', 'loanLength', 'Enter loan length (Months)', form);
+    appendFormInputAndLabel('number', 'loanLength', 'Enter loan length (m onths)', form);
     appendFormInputAndLabel('number', 'interestRate', 'Enter annual loan interest rate (%)', form);
     
     const submitMortgageButton = document.createElement('button');
     submitMortgageButton.classList.add('button', 'done', 'material-symbols-outlined');
     submitMortgageButton.innerText = 'check';
     submitMortgageButton.addEventListener('click', e => {
-      const principal = document.getElementById('loanAmount').value;
-      const months = document.getElementById('loanLength').value;
-      const rate = document.getElementById('interestRate').value;
-      if(principal < 0){
+      const principal = parseFloat(document.getElementById('loanAmount').value);
+      const months = parseInt(document.getElementById('loanLength').value);
+      const rate = parseFloat(document.getElementById('interestRate').value);
+      if(principal <= 0){
         alert('Principal must be greater than 0');
-      }else if(!Number.isInteger(Number.parseInt(months)) || months < 0){
+      }else if(!Number.isInteger(Number.parseInt(months)) || months <= 0){
         alert('Input must be a whole number of months greater than 0');
-      }else if(interestRate<0){
+      }else if(interestRate <= 0){
         alert('Interest rate must be greater than 0');
       }else{
-        const newMortgage = new Mortgage(Number.parseFloat(principal), Number.parseInt(months), Number.parseFloat(rate/100));
+        const newMortgage = new Mortgage(principal, months, rate/100);
         const table = new TableScreen(this.page, newMortgage);
         this.page.screen = table;
       }
@@ -101,7 +101,7 @@ class TableScreen{
     const headers = ['Months', 'Principal Remaining ($)', 'Total Paid ($)', 'Principal Paid ($)',
      'Interest Paid ($)', 'Total Interest Accrued ($)'];
 
-     const monthsArray = Array.from(
+    const monthsArray = Array.from(
       {length: (Number(this.mortgage.numPayments) + 1)},
       (_, index) => index
     );
@@ -180,21 +180,20 @@ function tableMaker(headers = [], dataColumns = []){
   for(let i=0; i<dataColumns[0].length; i++){
     const row = document.createElement('tr');
     for(let j=0; j<dataColumns.length; j++){
-      const data = generateHTMLElement('td', [], (Math.round(dataColumns[j][i] * 100) / 100)); // "naive" rounding apparently, works fine enough here bc this doesnt affect calculations on display.
-      //const data = generateHTMLElement('td', [], addZeroes(dataColumns[j][i], 2));
-      row.appendChild(data);
+      if(j == 0){
+        const data = generateHTMLElement('td', ['month'], dataColumns[j][i]);
+        data.setAttribute('align', 'center');
+        row.appendChild(data);
+      }else{
+        const data = generateHTMLElement('td', ['month'], (Math.round(dataColumns[j][i] * 100) / 100).toFixed(2));
+        data.setAttribute('align', 'right');
+        row.appendChild(data);
+      }
     }
     table.appendChild(row);
   }
   
   return table;
-}
-
-function addZeroes(num, accuracy) {
-  num = '' + num;
-  const dec = num.split('.')[1]
-  const len = dec && dec.length > accuracy ? dec.length : accuracy
-  return Number(num).toFixed(len)
 }
 
 export default {Page, TableScreen};
