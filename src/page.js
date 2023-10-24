@@ -4,6 +4,9 @@ class Page{
   constructor(){
     this.$screen = new InputScreen(this);
     this.$pageNode = document.body;
+
+    const header = generateHTMLElement('div', ['header'], 'Mortgage Amoritization Schedule');
+    this.pageNode.appendChild(header);
     this.pageNode.appendChild(this.screen.element);
   }
 
@@ -15,19 +18,18 @@ class Page{
   }
 
   set screen(screen){
+    const oldScreen = this.screen;
     this.$screen = screen;
-    this.updatePage();
+    this.updatePage(oldScreen);
   }
   set pageNode(pageNode){
     this.$pageNode = pageNode;
   }
 
-  updatePage(){
-    this.pageNode.innerHTML = '';
+  updatePage(oldScreen){
+    this.pageNode.removeChild(oldScreen.element);
     this.pageNode.appendChild(this.screen.element);
   }
-
-
 }
 
 class InputScreen{
@@ -49,7 +51,7 @@ class InputScreen{
       const months = document.getElementById('loanLength').value;
       const rate = document.getElementById('interestRate').value;
       const newMortgage = new Mortgage(principle, months, rate/100);
-      const table = new TableScreen(newMortgage);
+      const table = new TableScreen(this.page, newMortgage);
       this.page.screen = table;
 
     });
@@ -73,9 +75,17 @@ class InputScreen{
 }
 
 class TableScreen{
-  constructor(thisMortgage){
+  constructor(page, thisMortgage){
     this.mortgage = thisMortgage;
+    this.$page = page;
     this.$element = generateHTMLElement('div', ['screen', 'table']);
+
+    const mortgageInfoBar = generateHTMLElement('div', ['mortgage-info', 'bar']);
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Original Principle: $' + this.mortgage.principle));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Loan Length: ' + this.mortgage.numPayments + ' Months'));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Interest Rate: ' + this.mortgage.interestRate * 100 + '%'));
+
+    this.element.appendChild(mortgageInfoBar);
 
     const headers = ['Months', 'Principle Remaining', 'Total Paid', 'Principle Paid',
      'Interest Paid', 'Total Interest Accrued'];
@@ -88,18 +98,34 @@ class TableScreen{
     const columnData = [monthsArray, this.mortgage.principleValuesList, this.mortgage.totalPaidList,
       this.mortgage.principlePaymentsList, this.mortgage.interestPaymentsList,
       this.mortgage.totalInterestList];
-    console.log(columnData);
 
     const table = tableMaker(headers, columnData);
-    this.element.appendChild(table);
+    const tableWrapper = generateHTMLElement('div', ['table-wrapper']);
+    tableWrapper.appendChild(table);
+    this.element.appendChild(tableWrapper);
+
+    const resetButton = document.createElement('button');
+    resetButton.classList.add('button', 'reset');
+    resetButton.innerText = 'New Mortgage';
+    resetButton.appendChild(generateHTMLElement('div', ['material-symbols-outlined'], 'replay'));
+    resetButton.addEventListener('click', e => {
+      this.page.screen = new InputScreen(this.page);
+    });
+    this.element.appendChild(resetButton);
   }
 
   get element(){
     return this.$element;
   }
+  get page(){
+    return this.$page;
+  }
 
   set element(element){
     this.$element = element;
+  }
+  set page(page){
+    this.$page = page;
   }
 }
 
@@ -123,20 +149,6 @@ function appendFormInputAndLabel(type, id, label, parent){
 
   parent.appendChild(generateFormLabel(label, id));
   parent.appendChild(text);
-}
-
-function appendFormSelectField(id, label, selectionList, parent){
-  const select = document.createElement('select');
-  select.id = id;
-  for(let i=0; i<selectionList.length; i++){
-    const option = document.createElement("option");
-    option.value = selectionList[i];
-    option.text = selectionList[i];
-    select.appendChild(option);
-  }
-
-  parent.appendChild(generateFormLabel(label, id));
-  parent.appendChild(select);
 }
 
 function generateFormLabel(label, forInput){
