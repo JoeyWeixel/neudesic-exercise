@@ -1,3 +1,4 @@
+import _ from "lodash";
 import Mortgage from "./mortgage";
 
 class Page{
@@ -42,7 +43,7 @@ class InputScreen{
     appendFormInputAndLabel('number', 'loanAmount', 'Enter loan amount ($)', form);
     appendFormInputAndLabel('number', 'loanLength', 'Enter loan length (Months)', form);
     appendFormInputAndLabel('number', 'interestRate', 'Enter loan interest rate (%)', form);
-
+    
     const submitMortgageButton = document.createElement('button');
     submitMortgageButton.classList.add('button', 'done', 'material-symbols-outlined');
     submitMortgageButton.innerText = 'check';
@@ -50,10 +51,17 @@ class InputScreen{
       const principle = document.getElementById('loanAmount').value;
       const months = document.getElementById('loanLength').value;
       const rate = document.getElementById('interestRate').value;
-      const newMortgage = new Mortgage(principle, months, rate/100);
-      const table = new TableScreen(this.page, newMortgage);
-      this.page.screen = table;
-
+      if(principle < 0){
+        alert('Principle must be greater than 0');
+      }else if(!Number.isInteger(Number.parseInt(months)) || months < 0){
+        alert('Input must be a whole number of months greater than 0');
+      }else if(interestRate<0){
+        alert('Interest rate must be greater than 0');
+      }else{
+        const newMortgage = new Mortgage(principle, months, rate/100);
+        const table = new TableScreen(this.page, newMortgage);
+        this.page.screen = table;
+      }
     });
     form.appendChild(submitMortgageButton);
 
@@ -146,6 +154,7 @@ function appendFormInputAndLabel(type, id, label, parent){
   text.type = type;
   text.id = id;
   text.classList.add('input');
+  text.value = 0;
 
   parent.appendChild(generateFormLabel(label, id));
   parent.appendChild(text);
