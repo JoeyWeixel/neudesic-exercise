@@ -89,9 +89,9 @@ class TableScreen{
     this.$element = generateHTMLElement('div', ['screen', 'table']);
 
     const mortgageInfoBar = generateHTMLElement('div', ['mortgage-info', 'bar']);
-    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Original Principal: $' + Number.parseInt(this.mortgage.principal)));
-    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Loan Length: ' + Number.parseInt(this.mortgage.numPayments + ' Months')));
-    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Interest Rate: ' + Math.round(this.mortgage.interestRate * 100 * 1000) / 1000 + '%'));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Original Principal: $' + this.mortgage.principal.toFixed(2)));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Loan Length: ' + this.mortgage.numPayments + ' Months'));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Interest Rate: ' + (Math.round(this.mortgage.interestRate * 100 * 1000) / 1000).toFixed(3) + '%'));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Monthly Payment: ' + '$' + Math.round(this.mortgage.monthlyPayment * 100) / 100));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Total Loan Cost: ' + '$' + Math.round(this.mortgage.totalPaidList[this.mortgage.totalPaidList.length - 1] * 100) / 100));
 
@@ -180,13 +180,21 @@ function tableMaker(headers = [], dataColumns = []){
   for(let i=0; i<dataColumns[0].length; i++){
     const row = document.createElement('tr');
     for(let j=0; j<dataColumns.length; j++){
-      const data = generateHTMLElement('td', [], Math.round(dataColumns[j][i] * 100) / 100); // "naive" rounding apparently, works fine enough here bc this doesnt affect calculations on display.
+      const data = generateHTMLElement('td', [], (Math.round(dataColumns[j][i] * 100) / 100)); // "naive" rounding apparently, works fine enough here bc this doesnt affect calculations on display.
+      //const data = generateHTMLElement('td', [], addZeroes(dataColumns[j][i], 2));
       row.appendChild(data);
     }
     table.appendChild(row);
   }
   
   return table;
+}
+
+function addZeroes(num, accuracy) {
+  num = '' + num;
+  const dec = num.split('.')[1]
+  const len = dec && dec.length > accuracy ? dec.length : accuracy
+  return Number(num).toFixed(len)
 }
 
 export default {Page, TableScreen};
