@@ -181,11 +181,11 @@ function tableMaker(headers = [], dataColumns = []){
     const row = document.createElement('tr');
     for(let j=0; j<dataColumns.length; j++){
       if(j == 0){
-        const data = generateHTMLElement('td', ['month'], dataColumns[j][i]);
+        const data = generateHTMLElement('td', [], dataColumns[j][i]);
         data.setAttribute('align', 'center');
         row.appendChild(data);
       }else{
-        const data = generateHTMLElement('td', ['month'], (Math.round(dataColumns[j][i] * 100) / 100).toFixed(2));
+        const data = generateHTMLElement('td', [], (Math.round(dataColumns[j][i] * 100) / 100).toFixed(2));
         data.setAttribute('align', 'right');
         row.appendChild(data);
       }
