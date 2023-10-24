@@ -58,7 +58,7 @@ class InputScreen{
       }else if(interestRate<0){
         alert('Interest rate must be greater than 0');
       }else{
-        const newMortgage = new Mortgage(principal, months, rate/100);
+        const newMortgage = new Mortgage(Number.parseFloat(principal), Number.parseInt(months), Number.parseFloat(rate/100));
         const table = new TableScreen(this.page, newMortgage);
         this.page.screen = table;
       }
@@ -89,17 +89,17 @@ class TableScreen{
     this.$element = generateHTMLElement('div', ['screen', 'table']);
 
     const mortgageInfoBar = generateHTMLElement('div', ['mortgage-info', 'bar']);
-    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Original Principal: $' + this.mortgage.Principal));
-    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Loan Length: ' + this.mortgage.numPayments + ' Months'));
-    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Interest Rate: ' + this.mortgage.interestRate * 100 + '%'));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Original Principal: $' + Number.parseInt(this.mortgage.principal)));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Loan Length: ' + Number.parseInt(this.mortgage.numPayments + ' Months')));
+    mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Interest Rate: ' + Math.round(this.mortgage.interestRate * 100 * 1000) / 1000 + '%'));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Monthly Payment: ' + '$' + Math.round(this.mortgage.monthlyPayment * 100) / 100));
     mortgageInfoBar.appendChild(generateHTMLElement('div', ['info'], 'Total Loan Cost: ' + '$' + Math.round(this.mortgage.totalPaidList[this.mortgage.totalPaidList.length - 1] * 100) / 100));
 
 
     this.element.appendChild(mortgageInfoBar);
 
-    const headers = ['Months', 'Principal Remaining ($)', 'Total Paid', 'Principal Paid',
-     'Interest Paid', 'Total Interest Accrued'];
+    const headers = ['Months', 'Principal Remaining ($)', 'Total Paid ($)', 'Principal Paid ($)',
+     'Interest Paid ($)', 'Total Interest Accrued ($)'];
 
      const monthsArray = Array.from(
       {length: (Number(this.mortgage.numPayments) + 1)},
@@ -180,7 +180,7 @@ function tableMaker(headers = [], dataColumns = []){
   for(let i=0; i<dataColumns[0].length; i++){
     const row = document.createElement('tr');
     for(let j=0; j<dataColumns.length; j++){
-      const data = generateHTMLElement('td', [], '$' + Math.round(dataColumns[j][i] * 100) / 100); // "naive" rounding apparently, works fine enough here bc this doesnt affect calculations on display.
+      const data = generateHTMLElement('td', [], Math.round(dataColumns[j][i] * 100) / 100); // "naive" rounding apparently, works fine enough here bc this doesnt affect calculations on display.
       row.appendChild(data);
     }
     table.appendChild(row);
