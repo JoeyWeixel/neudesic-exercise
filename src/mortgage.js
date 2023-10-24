@@ -18,7 +18,6 @@ class Mortgage{
   }
   get monthlyPayment(){
     let onePlusRtoN = Math.pow(1 + (this.interestRate / 12), this.numPayments);
-    console.log(this.interestRate);
     let payment = this.principal * (((this.interestRate / 12) * onePlusRtoN) / (onePlusRtoN - 1));
     return payment;
   }
