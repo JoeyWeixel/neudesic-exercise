@@ -5,4 +5,4 @@ import page from "./page";
 const webpage = new page.Page();
 
 //go straight to table for development
-//webpage.screen = new page.TableScreen(webpage, new Mortgage(100, 100, .1));
+webpage.screen = new page.TableScreen(webpage, new Mortgage(5000, 60, .055));
